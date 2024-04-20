@@ -37,7 +37,7 @@ const userSchema: Schema<User> = new Schema({
     required: [true, "username is required"],
     trim: true,
     unique: true,
-    min: [4, "username must at least 4 characters"],
+    minlength: [4, "username must at least 4 characters"],
   },
   email: {
     type: String,
@@ -52,7 +52,7 @@ const userSchema: Schema<User> = new Schema({
   password: {
     type: String,
     required: [true, "password is required"],
-    min: [4, "password must at least 4 characters"],
+    minLength: [4, "password must at least 4 characters"],
   },
   verifyCode: {
     type: String,
