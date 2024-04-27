@@ -8,16 +8,14 @@ import { ThemeToggle } from "./ThemeToggle";
 
 export default function Navbar() {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const user: User = session?.user as User;
 
   return (
     <nav className="w-full p-4  shadow-[0px_0px_8px_silver] flex items-center justify-between sm:flex-row flex-col gap-4 sm:px-12 ">
       <h1
-        onClick={() => {
-          window.location.reload();
-        }}
+
         className="cursor-pointer animate-pulse relative z-10 text-xl md:text-2xl bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-600 font-sans font-bold"
       >
         Genuine Feedback
@@ -25,7 +23,7 @@ export default function Navbar() {
 
       {/* buttons box  */}
       <div className="flex justify-center items-center gap-2">
-        {session ? (
+        {session && status === "authenticated" && (
           <div className=" flex justify-center items-center gap-4">
             <h2 className="text-md font-sans from-neutral-500">
               Hello, {user?.username}
@@ -34,11 +32,15 @@ export default function Navbar() {
             <Button onClick={() => signOut()} variant={"destructive"}>
               Logout
             </Button>
-
-            {/* <ThemeToggle/> */}
           </div>
-        ) : (
-          <div className="flex justify-center items-center gap-5">
+        ) 
+        
+          
+        }
+
+        {
+          !session && status === "unauthenticated" && (
+            <div className="flex justify-center items-center gap-5">
             <Button
               onClick={() => {
                 router.push("/sign-in");
@@ -56,7 +58,10 @@ export default function Navbar() {
               Sign Up
             </Button>
           </div>
-        )}
+          )
+        }
+        
+        
 
         <span className="ml-12">
           {" "}
