@@ -13,7 +13,7 @@ export const authOptions: NextAuthOptions = {
       credentials: {
         email: {
           label: "Email",
-          type: "email",
+          type: "text",
           placeholder: "example@gmail.com",
         },
         password: {
@@ -27,8 +27,8 @@ export const authOptions: NextAuthOptions = {
           await dbConnect();
           const user = await UserModel.findOne({
             $or: [
-              { email: credentials.indentifier.email },
-              { username: credentials.indentifier.username },
+              { email:  credentials.identifier },
+              { username:  credentials.identifier },
             ],
           });
 

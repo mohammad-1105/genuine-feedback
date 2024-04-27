@@ -77,7 +77,6 @@ export default function SingUpPage() {
 
   // Define form submit
   const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
-    console.log("Data :: ", data); //! REMOVE LATER
 
     try {
       setIsSubmitting(true);
@@ -107,8 +106,8 @@ export default function SingUpPage() {
   return (
     <div className="bg-gray-800 min-h-screen w-full p-5 flex justify-center items-center">
       <div className="w-full max-w-[32rem] border rounded-md p-6 bg-white z-50">
-        <header className="my-6">
-          <h1 className="relative z-10 text-4xl md:text-6xl bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-600  text-center font-sans font-bold">
+        <header className="mb-6">
+          <h1 className="relative z-10 text-4xl md:text-5xl bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-600  text-center font-sans font-bold">
             Join Genuine Feedback
           </h1>
           <p className="text-center ">
