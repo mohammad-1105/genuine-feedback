@@ -104,8 +104,8 @@ export default function SingUpPage() {
   };
 
   return (
-    <div className="bg-gray-800 min-h-screen w-full p-5 flex justify-center items-center">
-      <div className="w-full max-w-[32rem] border rounded-md p-6 bg-white z-50">
+    <div className="bg-gray-100 dark:bg-inherit min-h-screen w-full p-5 flex justify-center items-center">
+      <div className="w-full max-w-[32rem] border rounded-md p-6 bg-white dark:bg-inherit z-50">
         <header className="mb-6">
           <h1 className="relative z-10 text-4xl md:text-5xl bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-600  text-center font-sans font-bold">
             Join Genuine Feedback
