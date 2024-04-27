@@ -7,7 +7,7 @@ export default function DashboardLayout({
   return (
 
     <div className="w-full min-h-screen">
-      <Navbar/>
+         <Navbar/>
         {children}
     </div>
    
