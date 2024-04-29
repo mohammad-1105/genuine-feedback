@@ -15,6 +15,9 @@ import { z } from "zod";
 import { Switch } from "@/components/ui/switch";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
 
 export default function DashboardPage() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -39,7 +42,6 @@ export default function DashboardPage() {
   const onMessageDelete = (messageId: string) => {
     setMessages(messages.filter((message) => message._id !== messageId));
   };
-
 
   // fetch acceptingMessage status
   const fetchAcceptMessageStatus = useCallback(async () => {
@@ -126,24 +128,65 @@ export default function DashboardPage() {
     fetchAcceptMessageStatus();
   }, [session, fetchAcceptMessageStatus, fetchAllMessages]);
 
+  // profile link and copied function 
+
+  const user  = session?.user
+  const username = user?.username
+
+  const baseURL = `${window.location.protocol}//${window.location.host}`;
+  const profileURL = `${baseURL}/u/${username}`
+
+  const copyToClipboard = () => {
+    window.navigator.clipboard.writeText(profileURL)
+    toast({
+      title: 'URL Copied!',
+      description: 'Profile URL has been copied to clipboard.',
+    })
+  }
+
+
   return (
     <div className="min-h-full sm:w-[90vw] mx-auto py-10 px-10">
       <h1 className="text-4xl sm:text-5xl font-extrabold">Dashboard</h1>
 
+      {/* profile link starts here */}
+
+      <div>
+        <div className="flex justify-end items-center">
+          <div className="grid w-full max-w-sm items-center gap-1.5">
+            <Label htmlFor="profile-link" className="sm:text-lg">Your profile link</Label>
+            <div className="flex w-full max-w-sm items-center space-x-2">
+              <Input 
+              id="profile-link"
+              type="text"
+              disabled
+              value={profileURL}
+              className=" text-pretty italic"
+
+              />
+              <Button onClick={copyToClipboard} type="submit">Copy</Button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* profile link ends here */}
+
       <div className="my-4">
         <Separator />
         <div className="flex justify-between items-center p-4 gap-4">
-         <div className="flex justify-center items-center flex-wrap sm:flex-nowrap gap-4 border border-input bg-background hover:text-accent-foreground p-3 rounded-md">
-         <Switch
-            {...register("acceptMessage")}
-            checked={acceptMessage}
-            onCheckedChange={handleSwitchToggle}
-            disabled={isRefreshSwitchLoading}
-          />
+          <div className="flex justify-center items-center flex-wrap sm:flex-nowrap gap-4 border border-input bg-background hover:text-accent-foreground p-3 rounded-md">
+            <Switch
+              {...register("acceptMessage")}
+              checked={acceptMessage}
+              onCheckedChange={handleSwitchToggle}
+              disabled={isRefreshSwitchLoading}
+            />
 
-
-         <span className="text-sm sm:text-lg"> Accept message : {acceptMessage ? "ON": "OFF"}</span>
-         </div>
+            <span className="text-sm sm:text-lg">
+              {" "}
+              Accept message : {acceptMessage ? "ON" : "OFF"}
+            </span>
+          </div>
           <Button
             className=""
             variant={"outline"}
@@ -165,15 +208,17 @@ export default function DashboardPage() {
 
       {/* message card container starts here  */}
       <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
-        {
-            messages.length > 0 ? messages.map((message) => (
-              <MessageCard
-                key={message._id}
-                message={message}
-                onMessageDelete={onMessageDelete}
-              />
-            )) : <p>No messages to show</p>        
-        }
+        {messages.length > 0 ? (
+          messages.map((message) => (
+            <MessageCard
+              key={message._id}
+              message={message}
+              onMessageDelete={onMessageDelete}
+            />
+          ))
+        ) : (
+          <p>No messages to show</p>
+        )}
       </div>
       {/* message card container ends here   */}
     </div>
