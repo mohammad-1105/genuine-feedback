@@ -74,12 +74,12 @@ export default function VerifyUserPage() {
   };
 
   return (
-    <div className="w-full min-h-screen p-5  bg-gray-100">
+    <div className="w-full min-h-screen p-5  bg-gray-100 dark:bg-inherit">
       <h1 className="relative z-10 text-4xl md:text-6xl bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-600  text-center font-sans font-bold">
         Email verification
       </h1>
       <div className="flex justify-center items-center h-[80vh]">
-        <div className="w-full max-w-xl p-4 bg-gray-50 ">
+        <div className="w-full max-w-xl p-4 bg-gray-50 dark:bg-inherit border rounded-md">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}

@@ -10,18 +10,19 @@ export async function POST(request: Request): Promise<Response> {
 
   // get session
   const session = await getServerSession(authOptions);
-  if (!session || !session?.user) {
+  if (!session || !session.user) {
     return Response.json(
       {
         success: false,
-        message: "Unauthorized | You are not logged in",
+        message: "Unauthenticated | You are not logged in",
       },
       { status: 401 }
     );
   }
 
   const user = session?.user as User;
-  const userId = user.id;
+  const userId = user._id;
+  console.log("userId", userId)
 
   try {
     const { acceptMessage } = await request.json();
@@ -32,6 +33,8 @@ export async function POST(request: Request): Promise<Response> {
       },
       { new: true }
     );
+
+    console.log("updatedUser", updatedUser)
 
     if (!updatedUser) {
       return Response.json(

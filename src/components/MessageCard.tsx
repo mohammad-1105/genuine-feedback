@@ -21,17 +21,54 @@ import {
 } from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "./ui/button";
+import { Message } from "@/models/user/user.model";
+import dayjs from "dayjs";
+import { toast } from "./ui/use-toast";
+import axios, { AxiosError } from "axios";
+import { ApiResponse } from "@/types/ApiResponse";
 
-export default function MessageCard() {
+interface MessageCardProps {
+  message: Message;
+  onMessageDelete: (messageId: string) => void;
+}
+
+export default function MessageCard({
+  message,
+  onMessageDelete,
+}: MessageCardProps) {
   const classNames = buttonVariants({
     variant: "destructive",
   });
 
+  const handleDeleteMessage = async () => {
+    try {
+      
+      const response = await axios.delete<ApiResponse>(`/api/delete-message/${message._id}`);
+       // optimistic delete
+       onMessageDelete(message._id);
+      toast({
+        title: response.data.message,
+      });
+
+     
+    } catch (error) {
+      // console.log("Delete message error ", error )
+      const axiosError = error as AxiosError<ApiResponse>;
+      toast({
+        title: "Error",
+        description: axiosError.response?.data.message ?? "Failed to delete",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
-    <Card className="w-full max-w-[500px]">
+    <Card className="">
       <CardHeader>
-        <CardTitle>Lorem ipsum dolor, sit amet consectetur</CardTitle>
-        <CardDescription>Card Description</CardDescription>
+        <CardTitle>{message?.content}</CardTitle>
+        <CardDescription>
+          {dayjs(message.createdAt).format("MMM D, YYYY h:mm A")}
+        </CardDescription>
       </CardHeader>
       <CardFooter>
         <AlertDialog>
@@ -48,8 +85,11 @@ export default function MessageCard() {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction className={cn(classNames)}>
-                Continue
+              <AlertDialogAction
+                className={cn(classNames)}
+                onClick={handleDeleteMessage}
+              >
+                Confirm
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

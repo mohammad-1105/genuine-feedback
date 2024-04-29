@@ -3,28 +3,18 @@ import UserModel from "@/models/user/user.model";
 import { User, getServerSession } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/options";
 
-export async function DELETE(
-  
-  { params }: { params: { messageId: string } }
-) {
-  // db connect first
+export async function DELETE(reqest: Request, { params }: { params: { messageId: string } }) {
+  const messageId = params.messageId;
   await dbConnect();
-
-  // check user is authenticated or not
   const session = await getServerSession(authOptions);
-  const user = session?.user as User;
-
-  if (!user || !session) {
+  const user: User = session?.user as User
+  
+  if (!session || !user) {
     return Response.json(
-      {
-        success: false,
-        message: "You are not authenticated",
-      },
-      { status: 400 }
+      { success: false, message: "Not authenticated" },
+      { status: 401 }
     );
   }
-
-  const messageId = params.messageId;
 
   try {
     const updatedResult = await UserModel.updateOne(
@@ -52,7 +42,7 @@ export async function DELETE(
       { status: 201 }
     );
   } catch (error) {
-    console.log("Message delete error :: ", error);
+    // console.log("Message delete error :: ", error);
     return Response.json(
       {
         success: false,
