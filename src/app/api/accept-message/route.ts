@@ -83,7 +83,7 @@ export async function GET(request: Request): Promise<Response> {
   }
 
   const user = session?.user as User;
-  const userId = user?._id;
+  const userId = user._id;
 
   try {
     // find and check user message accepting status
