@@ -18,7 +18,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-
 export default function DashboardPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isFetchingMessages, setIsFetchingMessages] = useState<boolean>(false);
@@ -50,7 +49,7 @@ export default function DashboardPage() {
 
       const response = await axios.get<ApiResponse>("/api/accept-message");
 
-      setValue("acceptMessage", response.data.isAcceptingMessages!);
+      setValue("acceptMessage", response.data.isAcceptingMessage!);
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
       toast({
@@ -128,22 +127,21 @@ export default function DashboardPage() {
     fetchAcceptMessageStatus();
   }, [session, fetchAcceptMessageStatus, fetchAllMessages]);
 
-  // profile link and copied function 
+  // profile link and copied function
 
-  const user  = session?.user
-  const username = user?.username
+  const user = session?.user;
+  const username = user?.username;
 
   const baseURL = `${window.location.protocol}//${window.location.host}`;
-  const profileURL = `${baseURL}/u/${username}`
+  const profileURL = `${baseURL}/u/${username}`;
 
   const copyToClipboard = () => {
-    window.navigator.clipboard.writeText(profileURL)
+    window.navigator.clipboard.writeText(profileURL);
     toast({
-      title: 'URL Copied!',
-      description: 'Profile URL has been copied to clipboard.',
-    })
-  }
-
+      title: "URL Copied!",
+      description: "Profile URL has been copied to clipboard.",
+    });
+  };
 
   return (
     <div className="min-h-full sm:w-[90vw] mx-auto py-10 px-10">
@@ -154,17 +152,20 @@ export default function DashboardPage() {
       <div>
         <div className="flex justify-end items-center">
           <div className="grid w-full max-w-sm items-center gap-1.5">
-            <Label htmlFor="profile-link" className="sm:text-lg">Your profile link</Label>
+            <Label htmlFor="profile-link" className="sm:text-lg">
+              Your profile link
+            </Label>
             <div className="flex w-full max-w-sm items-center space-x-2">
-              <Input 
-              id="profile-link"
-              type="text"
-              disabled
-              value={profileURL}
-              className=" text-pretty italic"
-
+              <Input
+                id="profile-link"
+                type="text"
+                disabled
+                value={profileURL}
+                className=" text-pretty italic"
               />
-              <Button onClick={copyToClipboard} type="submit">Copy</Button>
+              <Button onClick={copyToClipboard} type="submit">
+                Copy
+              </Button>
             </div>
           </div>
         </div>
